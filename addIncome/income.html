@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="income.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/0493276a63.js" crossorigin="anonymous"></script>
-    <title>Menu</title>
+    <title>Income</title>
 </head>
 
 <body>
@@ -32,7 +32,38 @@
                 <li><a href="#"></a><i class="fas fa-sign-out-alt"></i>Sign Out</li>
             </ul>
         </div>
-        <div class="content">
-            <img scr="vecteezy_financial-analysis-data-on-investment-business-results-and_.jpg">
+        <div class="container">
+            <div class="content">
+                <div class="title"><span>Adding an income</span></div>
+                <form action="#">
+                    <div class="row">
+                        <span>Amount</span>
+                        <input type="text" required>
+                    </div>
+                    <div class="row">
+                        <span>Date</span>
+                        <input type="date" value="2017-06-01" required>
+                    </div>
+                    <div class="row">
+                        <span>Category</span>
+                        <input type="radio" id="salary" name="income" value="salary">
+                        <label for="salary">Salary</label>
+                        <input type="radio" id="interest" name="income" value="interest">
+                        <label for="interest">Interest</label>
+                        <input type="radio" id="sale" name="income" value="sale">
+                        <label for="sale">Sale on Allegro</label>
+                        <input type="radio" id="another" name="income" value="another">
+                        <label for="another">Another</label>
+                    </div>
+                    <div class="row">
+                        <span>Comments</span>
+                        <input type="text">
+                    </div>
+                    <div class="row button">
+                        <input type="button" value="Save">
+                        <input type="button" value="Cancel">
+
+                    </div>
+
+            </div>
         </div>
-    </div>
