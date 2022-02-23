@@ -159,18 +159,23 @@ form .row input:focus{
 }
 
 
-
-
 .content form .button input{
         margin-top: 10px;
         background-color: #FFB300;
         color:rgb(68, 68, 68);
         cursor: pointer;
         width: 100px;
-        height:30px
+        height:30px;
+        margin-left: 20px;
+        border: 2px solid rgb(68, 68, 68);
+        border-radius: 6px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+
+
         }
     
-form .button input:hover{
+.content form .button input:hover{
         background: #ffa114;
         transform: scale(1.03);
         transition: all 0.1s ease-in-out;
