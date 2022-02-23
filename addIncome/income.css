@@ -183,11 +183,11 @@ form .row input:focus{
     }
 
 @media (max-width: 1350px){
-    
     ul>li{
     
         padding: 0 30px 0 30px;
     }
+}
     @media (max-width: 1175px){
         
         ul>li{
