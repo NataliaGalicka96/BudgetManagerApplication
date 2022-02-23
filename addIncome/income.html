@@ -25,7 +25,7 @@
         <div class="nav">
             <ul>
                 <li><a href="#"></a><i class="fa-solid fa-house"></i>Home</li>
-                <li><a href="#"></a><i class="fas fa-coins"></i>Add Income</li>
+                <li id="income"><a href="#"></a><i class="fas fa-coins"></i>Add Income</li>
                 <li><a href="#"></a><i class="fa-solid fa-money-bill-1-wave"></i>Add Expense</li>
                 <li><a href="#"></a><i class="fa-solid fa-chart-pie"></i>View Balance</li>
                 <li><a href="#"></a><i class="fas fa-cog"></i>Settings</li>
@@ -42,28 +42,26 @@
                     </div>
                     <div class="row">
                         <span>Date</span>
-                        <input type="date" value="2017-06-01" required>
+                        <input type="date" value="2022-02-23" required>
                     </div>
                     <div class="row">
                         <span>Category</span>
-                        <input type="radio" id="salary" name="income" value="salary">
-                        <label for="salary">Salary</label>
-                        <input type="radio" id="interest" name="income" value="interest">
-                        <label for="interest">Interest</label>
-                        <input type="radio" id="sale" name="income" value="sale">
-                        <label for="sale">Sale on Allegro</label>
-                        <input type="radio" id="another" name="income" value="another">
-                        <label for="another">Another</label>
+                        <select name="membership" id="membership">
+                            <option value="salary" selected>Salary</option>
+                            <option value="interest">Interest</option>
+                            <option value="sale">Sale on Allegro</option>
+                            <option value="another">Another</option>
+                        </select>
                     </div>
-                    <div class="row">
+                    <div class="row" id="comments">
                         <span>Comments</span>
-                        <input type="text">
+                        <input type="text" id="comments">
                     </div>
                     <div class="row button">
                         <input type="button" value="Save">
                         <input type="button" value="Cancel">
 
                     </div>
-
+                </form>
             </div>
         </div>
