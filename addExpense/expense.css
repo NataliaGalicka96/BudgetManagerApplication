@@ -39,6 +39,7 @@ body{
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px;
+    padding-bottom: 50px;
     text-align: center;
     height: 450px; 
     background-color: rgba(255, 255, 255, 0.5);
@@ -75,7 +76,7 @@ ul>li>i{
     margin-right: 10px;
 }
 
-#income{
+#expense{
     background-color: #ffa114;
     transform: scale(1.1);
     transition: all 0.1s ease-in-out;
@@ -86,7 +87,7 @@ ul>li>i{
 .container{
     max-width: 580px;
     padding: 0 20px;
-    margin: 75px auto 75px auto;
+    margin: 50px auto 50px auto;
 }
 
 
