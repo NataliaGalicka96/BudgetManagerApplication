@@ -37,121 +37,154 @@
                 <span>01 Feb 2022 - 24 Feb 2022</span>
             </div>
             <div class="period">
-                <select name="period" id="period">
+                <select name="period">
                     <option value="current" selected>Current Month</option>
                     <option value="month">Previous Month</option>
                     <option value="period">Period of time</option>
                     <option value="custom">Custom</option>
                 </select>
             </div>
-
         </div>
         <div class="container">
             <div class="content">
-                <div class="title"><span>Incomes</span></div>
-                <!-- <form action="#">
-                    <div class="row">
-                        <span>Amount</span>
-                        <input type="text" required>
-                    </div>
+                <div id="incomes">
+                    <div class="title"><span>Incomes</span></div>
+                    <table border="1" border-color="rgb(68, 68, 68)">
+                        <thead>
+                            <tr>
+                                <th> Category</th>
+                                <th> Income </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> Salary</td>
+                                <td> 3000.50</td>
+                            </tr>
+                            <tr>
+                                <td> Interest</td>
+                                <td> 800.00</td>
+                            </tr>
+                            <tr>
+                                <td> Sale on Allegro</td>
+                                <td> 560.00</td>
+                            </tr>
+                            <tr>
+                                <td> Another</td>
+                                <td> 200.00</td>
+                            </tr>
+                            <tr>
+                                <th>Sum</th>
+                                <td>4560.50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                    <div class="row">
-                        <span>Date</span>
-                        <input type="date" value="2022-02-23" required>
+                <div id="expenses">
+                    <div class="title"><span>Expenses</span></div>
+                    <table border="1" border-color="rgb(68, 68, 68)">
+                        <thead>
+                            <tr>
+                                <th> Category </th>
+                                <th> Expense </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> Food</td>
+                                <td> 1000.00</td>
+                            </tr>
+                            <tr>
+                                <td> Flat</td>
+                                <td> 2000.00</td>
+                            </tr>
+                            <tr>
+                                <td> Transport </td>
+                                <td> 200.00 </td>
+                            </tr>
+                            <tr>
+                                <td> Telecommunication </td>
+                                <td> 60.00 </td>
+                            </tr>
+                            <tr>
+                                <td> Healthcare </td>
+                                <td> 0.00 </td>
+                            </tr>
+                            <tr>
+                                <td> Clothes </td>
+                                <td> 150.00 </td>
+                            </tr>
+                            <tr>
+                                <td> Hygiene </td>
+                                <td> 100.00</td>
+                            </tr>
+                            <tr>
+                                <td> Kids </td>
+                                <td> 250.00</td>
+                            </tr>
+                            <tr>
+                                <td> Entertainment</td>
+                                <td> 200.00</td>
+                            </tr>
+                            <tr>
+                                <td> Trip</td>
+                                <td>0.00</td>
+                            </tr>
+                            <tr>
+                                <td> Training</td>
+                                <td>300.00</td>
+                            </tr>
+                            <tr>
+                                <td> Books </td>
+                                <td> 0.00 </td>
+                            </tr>
+                            <tr>
+                                <td> Savings</td>
+                                <td> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td> Retirement</td>
+                                <td> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td> Debt repayment</td>
+                                <td> 0.00</td>
+                            </tr>
+                            <tr>
+                                <td> Donation</td>
+                                <td>0.00</td>
+                            </tr>
+                            <tr>
+                                <td> Other expenses</td>
+                                <td> 150.00</td>
+                            </tr>
+                            <tr>
+                                <th>Sum</th>
+                                <td>4410.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="Balance">
+                        <div class="title"><span>Bilance</span></div>
+                        <table border="1" border-color="rgb(68, 68, 68)">
+                            <thead>
+                                <tr>
+                                    <th> Incomes </th>
+                                    <th> Expenses </th>
+                                    <th> Balance </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> 4560.50</td>
+                                    <td> 4410.00</td>
+                                    <td>150.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="row">
-                        <span>Payment method</span>
-                        <select name="method" id="method">
-                            <option value="cash" selected>Cash</option>
-                            <option value="credit">Credit Card</option>
-                            <option value="debit">Debit card</option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <span>Category</span>
-                        <select name="category" id="category">
-                            <option value="food" selected>Food</option>
-                            <option value="Flat">Flat</option>
-                            <option value="transport">Transport</option>
-                            <option value="telecommunication">Telecommunication</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="Clothes">Clothes</option>
-                            <option value="Hygiene">Hygiene</option>
-                            <option value="Kids">Kids</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Trip">Trip</option>
-                            <option value="Training">Training</option>
-                            <option value="Books">Books</option>
-                            <option value="Savings">Savings</option>
-                            <option value="Retirement">Retirement</option>
-                            <option value="Debt repayment">Debt repayment</option>
-                            <option value="Donation">Donation</option>
-                            <option value="Other expenses">Other expenses</option>
-                        </select>
-                    </div>
-                    <div class="row" id="comments">
-                        <span>Comments (optional)</span>
-                        <input type="text">
-                    </div>
-                    <div class="button">
-                        <input type="button" value="Save">
-                        <input type="button" value="Cancel">
-
-                    </div>
-                </form>-->
-            </div>
-            <div class="content">
-                <div class="title"><span>Expenses</span></div>
-                <!-- <form action="#">
-                    <div class="row">
-                        <span>Amount</span>
-                        <input type="text" required>
-                    </div>
-
-                    <div class="row">
-                        <span>Date</span>
-                        <input type="date" value="2022-02-23" required>
-                    </div>
-                    <div class="row">
-                        <span>Payment method</span>
-                        <select name="method" id="method">
-                            <option value="cash" selected>Cash</option>
-                            <option value="credit">Credit Card</option>
-                            <option value="debit">Debit card</option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <span>Category</span>
-                        <select name="category" id="category">
-                            <option value="food" selected>Food</option>
-                            <option value="Flat">Flat</option>
-                            <option value="transport">Transport</option>
-                            <option value="telecommunication">Telecommunication</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="Clothes">Clothes</option>
-                            <option value="Hygiene">Hygiene</option>
-                            <option value="Kids">Kids</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Trip">Trip</option>
-                            <option value="Training">Training</option>
-                            <option value="Books">Books</option>
-                            <option value="Savings">Savings</option>
-                            <option value="Retirement">Retirement</option>
-                            <option value="Debt repayment">Debt repayment</option>
-                            <option value="Donation">Donation</option>
-                            <option value="Other expenses">Other expenses</option>
-                        </select>
-                    </div>
-                    <div class="row" id="comments">
-                        <span>Comments (optional)</span>
-                        <input type="text">
-                    </div>
-                    <div class="button">
-                        <input type="button" value="Save">
-                        <input type="button" value="Cancel">
-
-                    </div>
-                </form>-->
+                </div>
             </div>
         </div>
 
