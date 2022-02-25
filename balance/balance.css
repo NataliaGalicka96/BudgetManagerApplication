@@ -44,8 +44,7 @@ body{
     text-align: center;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
-    display: flex;
-    justify-content: space-around;
+    display: inline;
 }
 
 ul{
@@ -103,21 +102,6 @@ ul>li>i{
    justify-content: space-around;
 }
 
-/*
-.choosedate span{
-    background-color: #FFB300;
-    width: 250px;
-    height:25px;
-    border-radius: 6px;
-    text-align: center;
-    margin-top: 20px;
-    color:rgb(68, 68, 68);
-    font-size: 16px;
-    border: 2px solid rgb(68, 68, 68);
-}*/
-
-
-
 
 .period select{
     background-color: #FFB300;
@@ -159,14 +143,45 @@ table{
 
 
 .content .title{
-    padding: 20px 10px 0 10px;
+    
     color: rgb(68, 68, 68);
     font-size: 25px;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center; 
+    
+    background-color: #FFB300;
+    height:35px;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 15px;
+    color:rgb(68, 68, 68);
+    font-size: 25px;
+    border-radius: 6px;
+    border: 2px solid rgb(68, 68, 68);
+    width:300px;
+    margin-left: auto;
+    margin-right: auto;
+
 }
+
+
+.content .announcement{
+    color: rgb(68, 68, 68);
+    font-weight: 600;
+    background-color: #62c460;
+    text-align: center;
+    margin-top: 25px;
+    color:rgb(68, 68, 68);
+    border-radius: 6px;
+    border: 2px solid rgb(68, 68, 68);
+    width:400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
 
 .content form{
     padding: 20px 25px 25px 25px;
