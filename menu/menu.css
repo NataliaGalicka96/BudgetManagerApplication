@@ -27,10 +27,9 @@ body{
     background: linear-gradient(to top, #FC38AE 0%, #F0D000 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 15px;
-    margin: 5px;
     color: #ffd700;
     font-weight: 500;
+    display: inline-block;
 }
 
 .navbar-dark .navbar-brand{
@@ -58,8 +57,8 @@ body{
     background: rgb(23 22 53 / 75%);
     border: 15px solid rgba(92, 91, 141, 0.25);
     border-color: none!important;
-    margin-top: 125px;
-    width:50%;
+    margin-top: 225px;
+    width:70%;
     color:#F0D000;
     display: flex;
     justify-content: center;
