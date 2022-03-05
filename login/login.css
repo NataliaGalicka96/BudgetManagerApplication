@@ -9,15 +9,7 @@ body{
     background-position: center;
     height: 100vh ;
 }
-/*
-.main{
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.5)50%, rgba(0,0,0,0.5)50%), url("20.jpg");
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-}
-*/
+
 .navbar{
     height: 75px;
     margin: auto;
@@ -58,9 +50,6 @@ body{
     border-color:#F0D000;
 }
 
-.row{
- height:100%
-}
 
 
 .login{
@@ -69,7 +58,7 @@ body{
     border-color: none!important;
     color:#F0D000;
     height: 350px;
-    margin-top: 20px;
+    margin-top: 75px;
     padding: 20px 25px 25px 25px;
 
 }
@@ -158,7 +147,7 @@ form .pass a:hover{
 
  .signup{
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 13px;
 }
  .signup a{
