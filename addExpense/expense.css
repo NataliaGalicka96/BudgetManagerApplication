@@ -115,3 +115,17 @@ form .row label{
 #exampleDataList2{
     border-radius:  0  6px 6px 0;
 }
+
+@media (max-width: 1000px){
+        
+    #content{
+    margin-top:100px;
+    }
+}
+
+@media (max-width: 850px){
+        
+    #content{
+    margin-top:210px;
+    }
+}
