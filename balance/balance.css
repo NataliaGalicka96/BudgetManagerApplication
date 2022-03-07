@@ -107,16 +107,23 @@ body{
     margin-top: 10px;
 }
 
-.table #titleOfTable{
+.table #titleOfTable1{
     background-image: linear-gradient(45deg, #FC38AE 0%, #F0D000 100%);
     color:rgb(23 22 53);
     font-size: 25px;
 }
-
-.table #tableBackground{
-    background-image: linear-gradient(45deg, #FC38AE 0%, #F0D000 100%);
-    color:rgb(23 22 53);
+.table #titleOfTable2{
+  background-image: linear-gradient(45deg, #FC38AE 0%, #F0D000 100%);
+  color:rgb(23 22 53);
+  font-size: 25px;
 }
+.table #titleOfTable3{
+  background-image: linear-gradient(45deg, #FC38AE 0%, #F0D000 100%);
+  color:rgb(23 22 53);
+  font-size: 25px;
+}
+
+
 #Table{
     background: rgb(23 22 53 / 75%);
     border: 15px solid rgba(92, 91, 141, 0.25);

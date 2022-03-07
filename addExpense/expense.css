@@ -57,7 +57,6 @@ body{
 .expense{
     background: rgb(23 22 53 / 75%);
     border: 15px solid rgba(92, 91, 141, 0.25);
-    border-color: none!important;
     color:#F0D000;
     height: auto;
     margin-top: 20px;
@@ -105,7 +104,6 @@ form .row label{
 .button{
     display: flex;
     justify-content: end;
-    margin
 }
 
 #exampleDataList{
