@@ -26,7 +26,7 @@
     <title>Expense</title>
 </head>
 
-<body>
+<body onload="countDown();">
 
     <div class="main">
         <nav class="navbar navbar-expand-lg navbar-dark">
@@ -79,16 +79,16 @@
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <label for="date" class="form-label">Date</label>
-                                    <input id="date" class="form-control" type="date" value="2022-02-23"
-                                        aria-label="default input example" required>
+                                    <input id="date" class="form-control" type="date" aria-label="default input example"
+                                        required>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <label for="exampleDataList2" class="form-label text-center">Payment Methods</label>
-                                    <input class="form-control" list="datalistOptions" id="exampleDataList2"
+                                    <input class="form-control" list="datalistOptions1" id="exampleDataList"
                                         aria-label="default input example" required>
-                                    <datalist id="datalistOptions2">
+                                    <datalist id="datalistOptions1">
                                         <option value="Cash" selected>
                                         <option value="Credit Card">
                                         <option value="Debit Card">
@@ -98,9 +98,9 @@
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <label for="exampleDataList" class="form-label">Category</label>
-                                    <input class="form-control" list="datalistOptions" id="exampleDataList"
+                                    <input class="form-control" list="datalistOptions2" id="exampleDataList"
                                         aria-label="default input example" required>
-                                    <datalist id="datalistOptions">
+                                    <datalist id="datalistOptions2">
                                         <option value="Food" selected>
                                         <option value="Flat">
                                         <option value="Transport">
@@ -139,6 +139,10 @@
             </div>
         </div>
     </div>
+
+
+    <script src="data.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
