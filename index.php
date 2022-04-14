@@ -49,19 +49,19 @@
                 <div class="col-12 col-lg-5">
                     <div class="login">
                         <div class="title"><span>Member login</span></div>
-                        <form>
+                        <form action = "zaloguj.php" method="post">
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-user"></i>
                                     <input type="email" class="form-control" id="exampleInputEmail1"
-                                        placeholder="Email or Phone" required>
+                                        placeholder="Email" name="email" required>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-lock"></i>
                                     <input type="password" class="form-control" id="exampleInputPassword1"
-                                        placeholder="Password" required>
+                                        placeholder="Password" name="password" required>
                                 </div>
                             </div>
                             <div class="row mb-3 form-check">
@@ -75,7 +75,7 @@
                             </div>
                             <div class="button"><button type="submit" class="btn btn-warning">Sign in</button></div>
 
-                            <div class="signup">Not a memeber? <a href="#"> Sign up now!</a></div>
+                            <div class="signup">Not a memeber? <a href="registration.php"> Sign up now!</a></div>
                         </form>
                     </div>
                 </div>
