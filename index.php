@@ -1,3 +1,8 @@
+<?php
+session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,12 +54,13 @@
                 <div class="col-12 col-lg-5">
                     <div class="login">
                         <div class="title"><span>Member login</span></div>
+                        
                         <form action = "zaloguj.php" method="post">
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-user"></i>
-                                    <input type="email" class="form-control" id="exampleInputEmail1"
-                                        placeholder="Email" name="email" required>
+                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                        placeholder="Username" name="username" required>
                                 </div>
                             </div>
                             <div class="row mb-3">

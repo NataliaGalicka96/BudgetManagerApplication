@@ -1,3 +1,12 @@
+<?php
+
+	session_start();
+	
+
+	
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,7 +64,11 @@
                             <a class="nav-link" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
                         </li>
                         <li class="nav-item px-1">
-                            <a class="nav-link" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a>
+                             
+                            <?php
+                            echo '<a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a>'    
+                            ?>
+                            
                         </li>
                     </ul>
                 </div>
@@ -65,11 +78,21 @@
             <div class="row mx-auto">
                 <div class="col text-center">
 
+                <?php
+                    echo "<p>Hello".$_SESSION['username'].'!';
+                    echo "<p> You are on the main page of the application. Select the options you are interested in from the
+                    navigation bar. You can add income, add expense, view the balance for the selected period.
+                </p> ";
+
+
+                ?>
+<!--
                     <p>Hello Natalia!</p>
                     <p>
                         You are on the main page of the application. Select the options you are interested in from the
                         navigation bar. You can add income, add expense, view the balance for the selected period.
                     </p>
+-->
                 </div>
             </div>
         </div>

@@ -80,15 +80,118 @@
         //Zapamiętaj wprowadzone dane
 
         $_SESSION['fr_username']=$username;
-        $_SESSION['fr_email']=$emal;
+        $_SESSION['fr_email']=$email;
         $_SESSION['fr_pass1']=$pass1;
         $_SESSION['fr_pass2']=$pass2;
 
+        /*
+        if(isset($_POST['username'])
+        {
+            $config = require_once 'config.php';
+
+                try{
+                    //piszemy obiektowo, więc tworzymy nowy obiekt klasy PDO
+
+                    $db = new PDO("mysql:host={$config['host']};dbname={$config['database']};charset=utf8", $config['user'], $config['password'], [
+                        PDO::ATTR_EMULATE_PREPARES => false, 
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                    ]);
+                    
+
+
+                    if ($validation_OK==true)
+				{
+					//Hurra, wszystkie testy zaliczone, dodajemy gracza do bazy
+					
+                    //Polecenie INSERT INTO - dodaje nowy wiersz
+					if ($polaczenie->query("INSERT INTO uzytkownicy VALUES (NULL, '$nick', '$haslo_hash', '$email', 100, 100, 100, now() + INTERVAL 14 DAY)"))
+					{
+                        //udana rejestracja
+						$_SESSION['udanarejestracja']=true; //nowa sesja
+						header('Location: witamy.php'); //przekierowanie na stronę
+					}
+					else
+					{
+                        //gdy nie udało się dodać nowego gracza - zwróci wyjątek
+						throw new Exception($polaczenie->error);
+					}
+					
+				}
+                    
+                } catch (PDOException $error) {
+                    echo $error->getMessage();
+                    exit('Database error');   
+                }
+		
+
+				
+				
+				
+
+
+
+}
+
+/*
+        //NASZE DANE PRZESZŁY POMYŚLNIE WALIDACJĘ, TERAZ CHCEMY SPRAWDZIĆ CZY TAKI USER JEST JUŻ 
+        // W BAZIE DANYCH 
+        //sprawdzamy username oraz email
+
+        //łączymy się z bazą danych
+
+        
+            require_once 'database.php';
+
+                //pobieram dane  formularza username oraz email
+
+                $username = filter_input(INPUT_POST, 'username');
+                $email = filter_input(INPUT_POST, 'email');
+
+    
+
+                //łącze z bazą danych, piszę zapytanie query
+                //sprawdzam czy jest w bazie danych już taki email
+
+                $query = $db->prepare('SELECT id FROM users WHERE email = :email');
+                $query->bindValue(':email', $email, PDO::PARAM_STR);
+                $query->execute();
+
+                //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
+
+                
+                $user=$query->fetch();
+
+                if($user){
+                    $validation_OK=false;
+                    $_SESSION['error_email']="There is already an account assigned to this email address!";
+                }
+
+                //sprawdzam czy jest w bazie dancyh już taki username
+                $query2 = $db->prepare('SELECT id FROM users WHERE username = :username');
+                $query2->bindValue(':username', $username, PDO::PARAM_STR);
+                $query2->execute();
+
+                //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
+
+                $user2=$query2->fetch();
+
+                if($user2){
+                    $validation_OK=false;
+                    $_SESSION['error_username']="There is already an account assigned to this email address!";
+                }
+
+        }
+        else{
+            //nie wypełniono formularza, przekieruj an strone registration.php
+            header ('Location: registration.php');
+            exit(); 
+        }
+
+    */
+        
+        
     }
-
-
-
-
+    
 
 ?>
 
