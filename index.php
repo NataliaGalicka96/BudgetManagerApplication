@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if ((isset($_SESSION['loggedUser']))&& ($_SESSION['loggedUser']==true)) {
+	header('Location: menu.php');
+	exit();
+}
 ?>
 
 
@@ -52,10 +57,11 @@ session_start();
                     </div>
                 </div>
                 <div class="col-12 col-lg-5">
-                    <div class="login">
+                    <div class="login" style="height: auto;">
                         <div class="title"><span>Member login</span></div>
                         
                         <form action = "zaloguj.php" method="post">
+
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-user"></i>
@@ -80,6 +86,14 @@ session_start();
                                 </div>
                             </div>
                             <div class="button"><button type="submit" class="btn btn-warning">Sign in</button></div>
+
+                            <?php
+                                if (isset($_SESSION['bad_attempt'])) 
+                                {
+                                    echo '<div class="error mt-1 text-center">'.$_SESSION['bad_attempt'].'</div>';
+                                    unset($_SESSION['bad_attempt']);
+                                }
+                            ?>
 
                             <div class="signup">Not a memeber? <a href="registration.php"> Sign up now!</a></div>
                         </form>

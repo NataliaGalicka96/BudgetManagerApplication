@@ -1,8 +1,14 @@
 <?php
 
 	session_start();
-	
 
+    require_once 'database.php';
+
+    if (!isset($_SESSION['loggedUser']))
+	{
+		header('Location: index.php');
+		exit();
+	}
 	
 ?>
 
@@ -47,8 +53,11 @@
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item px-1">
-                            <a class="nav-link px-1" aria-current="page" href="#"><i
-                                    class="fa-solid fa-house me-2"></i>Home</a>
+
+                                <?php
+                                    echo '<a class="nav-link px-1" aria-current="page" href="menu.php"><i class="fa-solid fa-house me-2"></i>Home</a>'    
+                                ?>
+                                    
                         </li>
                         <li class="nav-item px-1">
                             <a class="nav-link" href="#"><i class="fas fa-coins mr me-2"></i>Add Income</a>
@@ -79,20 +88,12 @@
                 <div class="col text-center">
 
                 <?php
-                    echo "<p>Hello".$_SESSION['username'].'!';
+                    echo "<p>Hello ".$_SESSION['username'].'!';
                     echo "<p> You are on the main page of the application. Select the options you are interested in from the
-                    navigation bar. You can add income, add expense, view the balance for the selected period.
-                </p> ";
-
+                    navigation bar. You can add income, add expense, view the balance for the selected period.</p> ";
 
                 ?>
-<!--
-                    <p>Hello Natalia!</p>
-                    <p>
-                        You are on the main page of the application. Select the options you are interested in from the
-                        navigation bar. You can add income, add expense, view the balance for the selected period.
-                    </p>
--->
+
                 </div>
             </div>
         </div>

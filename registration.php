@@ -45,7 +45,7 @@
 
         //Sprawdzenie poprawności haseł
 
-        $pass1= $_POST['password1'];
+        $pass1=$_POST['password1'];
         $pass2=$_POST['password2'];
 
         if((strlen($pass1))<3||(strlen($pass1)>20))
@@ -84,62 +84,6 @@
         $_SESSION['fr_pass1']=$pass1;
         $_SESSION['fr_pass2']=$pass2;
 
-        /*
-        if(isset($_POST['username'])
-        {
-            $config = require_once 'config.php';
-
-                try{
-                    //piszemy obiektowo, więc tworzymy nowy obiekt klasy PDO
-
-                    $db = new PDO("mysql:host={$config['host']};dbname={$config['database']};charset=utf8", $config['user'], $config['password'], [
-                        PDO::ATTR_EMULATE_PREPARES => false, 
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-                    ]);
-                    
-
-
-                    if ($validation_OK==true)
-				{
-					//Hurra, wszystkie testy zaliczone, dodajemy gracza do bazy
-					
-                    //Polecenie INSERT INTO - dodaje nowy wiersz
-					if ($polaczenie->query("INSERT INTO uzytkownicy VALUES (NULL, '$nick', '$haslo_hash', '$email', 100, 100, 100, now() + INTERVAL 14 DAY)"))
-					{
-                        //udana rejestracja
-						$_SESSION['udanarejestracja']=true; //nowa sesja
-						header('Location: witamy.php'); //przekierowanie na stronę
-					}
-					else
-					{
-                        //gdy nie udało się dodać nowego gracza - zwróci wyjątek
-						throw new Exception($polaczenie->error);
-					}
-					
-				}
-                    
-                } catch (PDOException $error) {
-                    echo $error->getMessage();
-                    exit('Database error');   
-                }
-		
-
-				
-				
-				
-
-
-
-}
-
-/*
-        //NASZE DANE PRZESZŁY POMYŚLNIE WALIDACJĘ, TERAZ CHCEMY SPRAWDZIĆ CZY TAKI USER JEST JUŻ 
-        // W BAZIE DANYCH 
-        //sprawdzamy username oraz email
-
-        //łączymy się z bazą danych
-
-        
             require_once 'database.php';
 
                 //pobieram dane  formularza username oraz email
@@ -147,49 +91,72 @@
                 $username = filter_input(INPUT_POST, 'username');
                 $email = filter_input(INPUT_POST, 'email');
 
-    
-
                 //łącze z bazą danych, piszę zapytanie query
                 //sprawdzam czy jest w bazie danych już taki email
 
-                $query = $db->prepare('SELECT id FROM users WHERE email = :email');
-                $query->bindValue(':email', $email, PDO::PARAM_STR);
-                $query->execute();
+                $sql = "SELECT id, username, password, email FROM users WHERE email=:email";
+
+                $userQuery = $db->prepare($sql);
+                $userQuery->bindValue(':email', $email, PDO::PARAM_STR);
+                $userQuery->execute();
 
                 //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
 
-                
-                $user=$query->fetch();
+                $user=$userQuery->fetch();
 
                 if($user){
                     $validation_OK=false;
                     $_SESSION['error_email']="There is already an account assigned to this email address!";
                 }
 
+
                 //sprawdzam czy jest w bazie dancyh już taki username
-                $query2 = $db->prepare('SELECT id FROM users WHERE username = :username');
-                $query2->bindValue(':username', $username, PDO::PARAM_STR);
-                $query2->execute();
+
+                $sql2 = "SELECT id, username, password, email FROM users WHERE username=:username";
+
+                $userQuery2 = $db->prepare($sql2);
+                $userQuery2->bindValue(':username', $username, PDO::PARAM_STR);
+                $userQuery2->execute();
 
                 //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
 
-                $user2=$query2->fetch();
+                $user2=$userQuery2->fetch();
 
                 if($user2){
                     $validation_OK=false;
                     $_SESSION['error_username']="There is already an account assigned to this email address!";
                 }
 
-        }
-        else{
+                if($validation_OK==true)
+                {
+                    //Hurra, wszystkie testy zaliczone, dodajemy uzytkownika do bazy
+					
+                    //Polecenie INSERT INTO - dodaje nowy wiersz 
+                            //tu podajemy nasz stworozny obiekt PDO
+                    $query = $db -> prepare('INSERT INTO users VALUES (NULL, :username, :pass, :email)');
+
+                    //posyłamy do zapytania nasz zwalidowany adres email
+                    //przypiszemy wartość $email w miejsce :email
+                    //bindValue(gdzie ma trafić parametr, co ma trafić, PDO::PARAM_STR)
+                    $query->bindValue(':email', $email, PDO::PARAM_STR);
+                    $query->bindValue(':username', $username, PDO::PARAM_STR);
+                    $query->bindValue(':pass', $pass1, PDO::PARAM_STR);
+
+                    $query->execute();
+
+                    $_SESSION['successfulRegistration']=true; //nowa sesja
+					header('Location: welcome.php'); //przekierowanie na stronę
+
+                }
+
+    
+    else{
             //nie wypełniono formularza, przekieruj an strone registration.php
+            $_SESSION['bad_attempt'] = '<span style="color:red">The username or password you have entered is incorrect!</span>';
             header ('Location: registration.php');
             exit(); 
         }
 
-    */
-        
-        
     }
     
 
@@ -267,7 +234,12 @@
                                     <i class="fa-solid fa-user"></i>
                                     <input class="form-control" type="text" placeholder="Name" name="username" required
                                     value="<?php
-                                        
+                                        if(isset($_SESSION['fr_username'])) //jesli zmienna sesyjna jest ustawiona pokazujemy na ekranie
+
+                                        {
+                                            echo $_SESSION['fr_username'];
+                                            unset($_SESSION['fr_username']);
+                                        }
                                         
                                         ?>">
 
@@ -289,7 +261,13 @@
                                     <i class="fa-solid fa-envelope"></i>
                                     <input type="text" class="form-control" id="exampleInputEmail1"
                                         placeholder="Email" required value="<?php
-                                        
+                                        if(isset($_SESSION['fr_email'])) //jesli zmienna sesyjna jest ustawiona pokazujemy na ekranie
+
+                                        {
+                                            echo $_SESSION['fr_email'];
+                                            unset($_SESSION['fr_email']);
+                                        }
+                                    
                                         
                                         ?>" name="email">
                                 </div>
@@ -310,7 +288,13 @@
                                     <input type="password" class="form-control" id="password" placeholder="Password" 
                                     name="password1" required 
                                     value="<?php
-                                        
+                                        if(isset($_SESSION['fr_pass1'])) //jesli zmienna sesyjna jest ustawiona pokazujemy na ekranie
+
+                                        {
+                                            echo $_SESSION['fr_pass1'];
+                                            unset($_SESSION['fr_pass1']);
+                                        }
+                                    
                                         ?>">
                                 </div>
 
@@ -336,7 +320,12 @@
                                     <input type="password" class="form-control" id="exampleInputPassword1"
                                         placeholder="Confirm password" name="password2" required
                                         value="<?php
-                                        
+                                            if(isset($_SESSION['fr_pass2'])) //jesli zmienna sesyjna jest ustawiona pokazujemy na ekranie
+
+                                            {
+                                                echo $_SESSION['fr_pass2'];
+                                                unset($_SESSION['fr_pass2']);
+                                            }
                                         ?>">
                                 </div>
 

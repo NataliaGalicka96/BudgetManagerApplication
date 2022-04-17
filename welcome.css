@@ -1,0 +1,21 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+
+.main {
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("20.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.row {
+    background: rgb(23 22 53 / 75%);
+    border: 15px solid rgba(92, 91, 141, 0.25);
+    color: #F0D000;
+    display: flex;
+    justify-content: center;
+}
