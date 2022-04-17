@@ -6,6 +6,13 @@
 //sprawdzamy czy zostało zarezerwowane miejsce w pamięci dla tej zmiennej, a nie jaka jest jej 
 //wartość
 
+if(isset($_SESSION['loggedUser'])){
+    header('Location: menu.php');
+    exit();
+}
+
+
+
     if(isset($_POST['username']))
     {
         //Zakładamy, ze walidacja jest udana
@@ -48,10 +55,10 @@
         $pass1=$_POST['password1'];
         $pass2=$_POST['password2'];
 
-        if((strlen($pass1))<3||(strlen($pass1)>20))
+        if((strlen($pass1))<8||(strlen($pass1)>20))
         {
             $validation_OK=false;
-            $_SESSION['error_password']="Password must be 3 to 20 characters long";
+            $_SESSION['error_password']="Password must be 8 to 20 characters long";
         }
 
         //Sprawdzam czy dwa hasła są takie same
@@ -64,18 +71,6 @@
 
         //hashujemy hasła
         $passwordHash=password_hash($pass1, PASSWORD_DEFAULT);
-
-        //CAPTCHA, BOT OR NOT?
-
-
-
-
-
-
-
-
-
-
 
         //Zapamiętaj wprowadzone dane
 
@@ -143,6 +138,36 @@
                     $query->bindValue(':pass', $pass1, PDO::PARAM_STR);
 
                     $query->execute();
+
+                    $sql = "SELECT id FROM users WHERE username = :username";
+                    $getUserId = $db->prepare($sql);
+                    $getUserId -> bindValue(':username', $username, PDO::PARAM_STR);
+                    $getUserId -> execute();
+
+                    $result = $getUserId -> fetch();
+                    $userId = $result['id'];
+
+
+                
+                    $sql="INSERT INTO incomes_category_assigned_to_users
+                    VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3),(NULL,$userId, 4)";
+                    
+                    $assignIncomeCategoriesToUser = $db->prepare($sql);
+			        $assignIncomeCategoriesToUser -> execute();
+
+
+                    $sql2="INSERT INTO expenses_category_assigned_to_users
+                    VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3),(NULL,$userId, 4),(NULL,$userId, 5),(NULL,$userId, 6),(NULL,$userId, 7),(NULL,$userId, 8),(NULL,$userId, 9),(NULL,$userId, 10),(NULL,$userId, 11),(NULL,$userId, 12),(NULL,$userId, 13),(NULL,$userId, 14),(NULL,$userId, 15),(NULL,$userId, 16)";
+                    
+                    $assignExpenseCategoriesToUser = $db->prepare($sql2);
+                    $assignExpenseCategoriesToUser -> execute();
+
+                    $sql3="INSERT INTO payment_methods_assigned_to_users
+                    VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3)";
+            
+                    $assignPaymentMethodsToUser = $db->prepare($sql3);
+                    $assignPaymentMethodsToUser -> execute();
+
 
                     $_SESSION['successfulRegistration']=true; //nowa sesja
 					header('Location: welcome.php'); //przekierowanie na stronę

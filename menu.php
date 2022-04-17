@@ -60,7 +60,17 @@
                                     
                         </li>
                         <li class="nav-item px-1">
-                            <a class="nav-link" href="#"><i class="fas fa-coins mr me-2"></i>Add Income</a>
+
+
+                        <?php
+                                    echo '<a class="nav-link" href="income.php">"<i class="fas fa-coins mr me-2"></i>Add Income</a>';
+                                    
+                        
+                        ?>
+
+                        
+                        
+                        
                         </li>
                         <li class="nav-item px-1">
                             <a class="nav-link" href="#"><i class="fa-solid fa-money-bill-1-wave me-2"></i>Add
@@ -88,9 +98,16 @@
                 <div class="col text-center">
 
                 <?php
-                    echo "<p>Hello ".$_SESSION['username'].'!';
+                    if (isset($_SESSION['username'])) 
+                    {
+                        echo "<p>Hello ".$_SESSION['username'].'!';
+                        unset($_SESSION['username']);
+                    }
+                    
                     echo "<p> You are on the main page of the application. Select the options you are interested in from the
                     navigation bar. You can add income, add expense, view the balance for the selected period.</p> ";
+                    
+
 
                 ?>
 

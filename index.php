@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if ((isset($_SESSION['loggedUser']))&& ($_SESSION['loggedUser']==true)) {
+if (isset($_SESSION['loggedUser'])){
 	header('Location: menu.php');
 	exit();
 }
@@ -60,7 +60,7 @@ if ((isset($_SESSION['loggedUser']))&& ($_SESSION['loggedUser']==true)) {
                     <div class="login" style="height: auto;">
                         <div class="title"><span>Member login</span></div>
                         
-                        <form action = "zaloguj.php" method="post">
+                        <form action = "logIn.php" method="post">
 
                             <div class="row mb-3">
                                 <div class="input-group">
