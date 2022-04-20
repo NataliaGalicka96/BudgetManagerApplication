@@ -72,6 +72,10 @@ if(isset($_SESSION['loggedUser'])){
         //hashujemy hasła
         $passwordHash=password_hash($pass1, PASSWORD_DEFAULT);
 
+      //  echo $passwordHash;
+      //  exit();
+
+
         //Zapamiętaj wprowadzone dane
 
         $_SESSION['fr_username']=$username;
@@ -79,102 +83,104 @@ if(isset($_SESSION['loggedUser'])){
         $_SESSION['fr_pass1']=$pass1;
         $_SESSION['fr_pass2']=$pass2;
 
-            require_once 'database.php';
+        require_once 'database.php';
 
-                //pobieram dane  formularza username oraz email
+        //pobieram dane  formularza username oraz email
 
-                $username = filter_input(INPUT_POST, 'username');
-                $email = filter_input(INPUT_POST, 'email');
+        $username = filter_input(INPUT_POST, 'username');
+        $email = filter_input(INPUT_POST, 'email');
 
-                //łącze z bazą danych, piszę zapytanie query
-                //sprawdzam czy jest w bazie danych już taki email
+        //łącze z bazą danych, piszę zapytanie query
+        //sprawdzam czy jest w bazie danych już taki email
 
-                $sql = "SELECT id, username, password, email FROM users WHERE email=:email";
+        $sql = "SELECT email FROM users WHERE email=:email";
 
-                $userQuery = $db->prepare($sql);
-                $userQuery->bindValue(':email', $email, PDO::PARAM_STR);
-                $userQuery->execute();
+        $userQuery = $db->prepare($sql);
+        $userQuery->bindValue(':email', $email, PDO::PARAM_STR);
+        $userQuery->execute();
 
-                //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
+        //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
 
-                $user=$userQuery->fetch();
+        $user=$userQuery->fetch();
 
-                if($user){
-                    $validation_OK=false;
-                    $_SESSION['error_email']="There is already an account assigned to this email address!";
-                }
-
-
-                //sprawdzam czy jest w bazie dancyh już taki username
-
-                $sql2 = "SELECT id, username, password, email FROM users WHERE username=:username";
-
-                $userQuery2 = $db->prepare($sql2);
-                $userQuery2->bindValue(':username', $username, PDO::PARAM_STR);
-                $userQuery2->execute();
-
-                //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
-
-                $user2=$userQuery2->fetch();
-
-                if($user2){
-                    $validation_OK=false;
-                    $_SESSION['error_username']="There is already an account assigned to this email address!";
-                }
-
-                if($validation_OK==true)
-                {
-                    //Hurra, wszystkie testy zaliczone, dodajemy uzytkownika do bazy
-					
-                    //Polecenie INSERT INTO - dodaje nowy wiersz 
-                            //tu podajemy nasz stworozny obiekt PDO
-                    $query = $db -> prepare('INSERT INTO users VALUES (NULL, :username, :pass, :email)');
-
-                    //posyłamy do zapytania nasz zwalidowany adres email
-                    //przypiszemy wartość $email w miejsce :email
-                    //bindValue(gdzie ma trafić parametr, co ma trafić, PDO::PARAM_STR)
-                    $query->bindValue(':email', $email, PDO::PARAM_STR);
-                    $query->bindValue(':username', $username, PDO::PARAM_STR);
-                    $query->bindValue(':pass', $pass1, PDO::PARAM_STR);
-
-                    $query->execute();
-
-                    $sql = "SELECT id FROM users WHERE username = :username";
-                    $getUserId = $db->prepare($sql);
-                    $getUserId -> bindValue(':username', $username, PDO::PARAM_STR);
-                    $getUserId -> execute();
-
-                    $result = $getUserId -> fetch();
-                    $userId = $result['id'];
+        if($user){
+            $validation_OK=false;
+            $_SESSION['error_email']="There is already an account assigned to this email address!";
+        }
 
 
-                
-                    $sql="INSERT INTO incomes_category_assigned_to_users
-                    VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3),(NULL,$userId, 4)";
-                    
-                    $assignIncomeCategoriesToUser = $db->prepare($sql);
-			        $assignIncomeCategoriesToUser -> execute();
+        //sprawdzam czy jest w bazie dancyh już taki username
 
+        $sql2 = "SELECT username FROM users WHERE username=:username";
 
-                    $sql2="INSERT INTO expenses_category_assigned_to_users
-                    VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3),(NULL,$userId, 4),(NULL,$userId, 5),(NULL,$userId, 6),(NULL,$userId, 7),(NULL,$userId, 8),(NULL,$userId, 9),(NULL,$userId, 10),(NULL,$userId, 11),(NULL,$userId, 12),(NULL,$userId, 13),(NULL,$userId, 14),(NULL,$userId, 15),(NULL,$userId, 16)";
-                    
-                    $assignExpenseCategoriesToUser = $db->prepare($sql2);
-                    $assignExpenseCategoriesToUser -> execute();
+        $userQuery2 = $db->prepare($sql2);
+        $userQuery2->bindValue(':username', $username, PDO::PARAM_STR);
+        $userQuery2->execute();
 
-                    $sql3="INSERT INTO payment_methods_assigned_to_users
-                    VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3)";
+        //łapiemy wyjątek gdy zapytanie nie zwróci nam żadnego rekordu, tzn: nie istnieje login
+
+        $user2=$userQuery2->fetch();
+
+        if($user2){
+            $validation_OK=false;
+            $_SESSION['error_username']="There is already an account assigned to this email address!";
+        }
+
+        if($validation_OK==true)
+        {
+            //Hurra, wszystkie testy zaliczone, dodajemy uzytkownika do bazy
             
-                    $assignPaymentMethodsToUser = $db->prepare($sql3);
-                    $assignPaymentMethodsToUser -> execute();
+            //Polecenie INSERT INTO - dodaje nowy wiersz 
+                    //tu podajemy nasz stworozny obiekt PDO
+            $query = $db -> prepare('INSERT INTO users VALUES (:id, :username, :pass, :email)');
+
+            //posyłamy do zapytania nasz zwalidowany adres email
+            //przypiszemy wartość $email w miejsce :email
+            //bindValue(gdzie ma trafić parametr, co ma trafić, PDO::PARAM_STR)
+            $query->bindValue(':id', NULL, PDO::PARAM_INT);
+            $query->bindValue(':email', $email, PDO::PARAM_STR);
+            $query->bindValue(':username', $username, PDO::PARAM_STR);
+            $query->bindValue(':pass', $passwordHash, PDO::PARAM_STR);
+
+            $query->execute();
+
+            $_SESSION['successfulRegistration']=true; //nowa sesja
+            header ('Location: welcome.php');
+            
+
+            $sql = "SELECT id FROM users WHERE username = :username";
+            
+            
+            $getUserId = $db->prepare($sql);
+            $getUserId -> bindValue(':username', $username, PDO::PARAM_STR);
+            $getUserId -> execute();
+
+            $result = $getUserId -> fetch();
+            $userId = $result['id'];
+        
+
+            $sql="INSERT INTO incomes_category_assigned_to_users (user_id, name)
+            SELECT users.id, incomes_category_default.name FROM users, incomes_category_default WHERE users.id = $userId"; 
+            /* VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3),(NULL,$userId, 4)";*/
+            
+            $assignIncomeCategoriesToUser = $db->prepare($sql);
+            $assignIncomeCategoriesToUser -> execute();
 
 
-                    $_SESSION['successfulRegistration']=true; //nowa sesja
-					header('Location: welcome.php'); //przekierowanie na stronę
+            $sql="INSERT INTO expenses_category_assigned_to_users (user_id, name)
+            SELECT users.id, expenses_category_default.name FROM users, expenses_category_default WHERE users.id = $userId";
+            
+            $assignExpenseCategoriesToUser = $db->prepare($sql);
+            $assignExpenseCategoriesToUser -> execute();
 
-                }
+            $sql="INSERT INTO payment_methods_assigned_to_users (user_id, name)
+            SELECT users.id, payment_methods_default .name FROM users, payment_methods_default  WHERE users.id = $userId";
 
     
+            $assignPaymentMethodsToUser = $db->prepare($sql);
+            $assignPaymentMethodsToUser -> execute();
+
+        }
     else{
             //nie wypełniono formularza, przekieruj an strone registration.php
             $_SESSION['bad_attempt'] = '<span style="color:red">The username or password you have entered is incorrect!</span>';
@@ -359,6 +365,7 @@ if(isset($_SESSION['loggedUser'])){
 
 
                             <div class="button"><button type="submit" class="btn btn-warning">Sign up</button></div>
+                                        
 
                             <div class="signin">Already have an account? <a href="index.php"> Sign in now!</a></div>
                         </form>

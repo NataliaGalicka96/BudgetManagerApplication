@@ -5,9 +5,11 @@
 
 	
 	//jeśli nie jesteśmy zalogowani
-	if(isset($_SESSION['loggedUser'])==false){
+	if(isset($_SESSION['loggedUser'])==false)
+	{
 
-		if(isset($_POST['username'])){
+		if(isset($_POST['username']))
+		{
 			//odczytujemy hasło
 			$username = filter_input(INPUT_POST, 'username');
 			$password = filter_input(INPUT_POST, 'password');
@@ -36,12 +38,35 @@
        		//jeżeli user!= false
         	//jeśli login istnieje i dla tego rekordu hasło zgadza się z tym hasłem w bazie danych
 		
-			if ($user && ($user['password']==$password) /*password_verify($password, $user['password']*/){
+			if ($user &&  password_verify($password, $user['password'])){
 				//zapamietanie zalogowanego admina
 				$_SESSION['loggedUser']=true;
 
 				$_SESSION['logged_id'] = $user['id'];
 				$_SESSION['username'] = $user['username'];
+
+				if(!empty($_POST['remember_checkbox']))
+				{
+					$rememberMe=$_POST['remember_checkbox'];
+
+				//set cookie
+					setcookie('username', $username, time()+3600*24*7);
+					setcookie('password', $password, time()+3600*24*7);
+		
+				}else{
+					//expire cookie
+					if(isset($_COOKIE['username']))
+					{
+						setcookie('username', "");
+					}
+					if(isset($_COOKIE['password']))
+					{
+						setcookie('password', "");
+					}
+					
+				}
+				//redirect 
+
 
 				unset($_SESSION['bad_attempt']);
 				header('Location: menu.php');

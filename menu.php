@@ -53,41 +53,24 @@
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item px-1">
-
-                                <?php
-                                    echo '<a class="nav-link px-1" aria-current="page" href="menu.php"><i class="fa-solid fa-house me-2"></i>Home</a>'    
-                                ?>
-                                    
+                            <a class="nav-link px-1" aria-current="page" href="menu.php"><i class="fa-solid fa-house me-2"></i>Home</a>           
                         </li>
                         <li class="nav-item px-1">
-
-
-                        <?php
-                                    echo '<a class="nav-link" href="income.php">"<i class="fas fa-coins mr me-2"></i>Add Income</a>';
-                                    
-                        
-                        ?>
-
-                        
-                        
+                            <a class="nav-link" href="income.php"><i class="fas fa-coins mr me-2"></i>Add Income</a>
                         
                         </li>
                         <li class="nav-item px-1">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-money-bill-1-wave me-2"></i>Add
+                            <a class="nav-link" href="expense.php"><i class="fa-solid fa-money-bill-1-wave me-2"></i>Add
                                 Expense</a>
                         </li>
                         <li class="nav-item px-1">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-chart-pie me-2"></i>View Balance</a>
+                            <a class="nav-link" href="balance.php"><i class="fa-solid fa-chart-pie me-2"></i>View Balance</a>
                         </li>
                         <li class="nav-item px-1">
-                            <a class="nav-link" href="#"><i class="fas fa-cog me-2"></i>Settings</a>
+                            <a class="nav-link" href="settings.php"><i class="fas fa-cog me-2"></i>Settings</a>
                         </li>
                         <li class="nav-item px-1">
-                             
-                            <?php
-                            echo '<a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a>'    
-                            ?>
-                            
+                            <a class="nav-link" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Sign Out</a>   
                         </li>
                     </ul>
                 </div>
@@ -101,13 +84,11 @@
                     if (isset($_SESSION['username'])) 
                     {
                         echo "<p>Hello ".$_SESSION['username'].'!';
-                        unset($_SESSION['username']);
+                        //unset($_SESSION['username']);
                     }
                     
                     echo "<p> You are on the main page of the application. Select the options you are interested in from the
                     navigation bar. You can add income, add expense, view the balance for the selected period.</p> ";
-                    
-
 
                 ?>
 

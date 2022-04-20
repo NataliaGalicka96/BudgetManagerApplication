@@ -1,10 +1,12 @@
 <?php
 session_start();
 
-if (isset($_SESSION['loggedUser'])){
+if ((isset($_SESSION['loggedUser']))&&($_SESSION['loggedUser']==true))
+{
 	header('Location: menu.php');
 	exit();
 }
+
 ?>
 
 
@@ -66,22 +68,41 @@ if (isset($_SESSION['loggedUser'])){
                                 <div class="input-group">
                                     <i class="fa-solid fa-user"></i>
                                     <input type="text" class="form-control" id="exampleInputEmail1"
-                                        placeholder="Username" name="username" required>
+                                        placeholder="Username" name="username" required
+                                        value="<?php
+                                        if(isset($_COOKIE['username'])) 
+                                        {
+                                            echo $_COOKIE['username'];
+                                        }
+                                        ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-lock"></i>
                                     <input type="password" class="form-control" id="exampleInputPassword1"
-                                        placeholder="Password" name="password" required>
+                                        placeholder="Password" name="password" required
+                                        value="<?php
+                                        if(isset($_COOKIE['password'])) 
+                                        {
+                                            echo $_COOKIE['password'];
+                                        }
+                                        ?>">
                                 </div>
                             </div>
                             <div class="row mb-3 form-check">
                                 <div class="pass">
                                     <div class="input-group">
-                                        <input type="checkbox" class="form-check-input me-2" id="remember">
+                                        <input type="checkbox" class="form-check-input me-2" id="remember" name="remember_checkbox"
+                                        value="<?php
+                                        if(isset($_COOKIE['username'])) 
+                                        {
+                                            ?> checked <?php } ?>
+                                        }
+                                        ?>">
                                         <label class="form-check-label" for="remember">Remember me</label>
                                     </div>
+
                                     <a href="#">Forgot password?</a>
                                 </div>
                             </div>
