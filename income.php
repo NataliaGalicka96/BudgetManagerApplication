@@ -25,18 +25,16 @@
 
         $incomeCategoriesOfLoggedUser = $incomeCategoryQuery -> fetchAll();
 
-
-
+        print_r($incomeCategoriesOfLoggedUser);
 
 
         $_SESSION['incomeAdded'] = false;
 
-    
-            if(isset($_POST['amount']))
-            {
+        if(isset($_POST['amount']))
+        {
                 
-                if(!empty($_POST['amount']) /*&& !empty($_POST['date']) && isset($_POST['category'])*/)
-                {
+            if(!empty($_POST['amount']) && !empty($_POST['date']) && isset($_POST['category'])) 
+            {
                     //Amount musi być liczbą, maksymalnie dwa miejsca po przecinku
                     //sprawdzam poprawność wprowadzonych danych
 
@@ -45,8 +43,9 @@
                     $incomeAmount = number_format($_POST['amount'], 2, '.', '');
                     $amountArray = explode('.', $incomeAmount);
 
-                    if(!is_numeric($incomeAmount) || strlen($incomeAmount) <0 ||strlen($incomeAmount) >10 || strlen($amountArray[1])>2 || strlen($amountArray[0])>8){
-                        $_SESSION['error_incomeAmount'] = "Enter valid positive amount - maximum 8 integer digits and 2 decimal places.";
+                    if(!is_numeric($incomeAmount) || strlen($incomeAmount) <0 ||strlen($incomeAmount) >8 || strlen($amountArray[1])>2 || strlen($amountArray[0])>6)
+                    {
+                        $_SESSION['error_incomeAmount'] = "Enter valid positive amount - maximum 6 integer digits and 2 decimal places.";
                         $validationOk=false;
 
                     }
@@ -72,7 +71,7 @@
                         
                     }
             
-                    //echo $incomeCatId;
+                    echo $incomeCatId;
 
                     $_SESSION['fr_incomeAmount']=$incomeAmount;
                     $_SESSION['fr_incomeDate'] = $incomeDate;
@@ -94,8 +93,7 @@
                         $_SESSION['incomeAdded'] = "Income has been added";
 
                     }
-
-                    
+ 
                     
                 }
                 else{
@@ -104,6 +102,7 @@
                 }
 
             }
+        
 
     }
 
@@ -216,7 +215,15 @@
                                 <div class="input-group">
                                     <label for="amount" class="form-label">Amount</label>
                                     <input id="amount" class="form-control" type="number" step="0.01" min="0"
-                                        aria-label="default input example"  name="amount">
+                                        aria-label="default input example"  name="amount"
+                                        value="<?php
+                                        
+                                        if(isset($_SESSION['fr_incomeAmount'])){
+                                            echo $_SESSION['fr_incomeAmount'];
+                                            unset($_SESSION['fr_incomeAmount']);
+                                        }
+                                        
+                                        ?>">
                                 </div>
 
                                 <?php
@@ -231,7 +238,14 @@
                                 <div class="input-group">
                                     <label for="date" class="form-label">Date</label>
                                     <input id="date" class="form-control" type="date" aria-label="default input example" name="date"
-                                        required>
+                                    required value="<?php
+                                        
+                                        if(isset($_SESSION['fr_incomeDate'])){
+                                            echo $_SESSION['fr_incomeDate'];
+                                            unset($_SESSION['fr_incomeDate']);
+                                        }
+                                        
+                                    ?>">
                                 </div>
                             </div>
 
@@ -246,8 +260,9 @@
                                             
                                             foreach($incomeCategoriesOfLoggedUser as $category)
                                             {
+                                                if(isset($_SESSION['fr_incomeCategory']))
                                                 echo '<option value='.$category['name'].'>';
-                                                
+                                                unset($_SESSION['fr_incomeCategory']);
                                             }
                                             
                                     
@@ -260,7 +275,15 @@
                                 <div class="input-group">
                                     <label for="area" class="form-label">Comments</label>
                                     <input id="area" class="form-control" type="text" name="comment"
-                                        aria-label="default input example">
+                                        aria-label="default input example"
+                                        value="<?php
+                                        
+                                        if(isset( $_SESSION['fr_incomeComment'])){
+                                            echo  $_SESSION['fr_incomeComment'];
+                                            unset( $_SESSION['fr_incomeComment']);
+                                        }
+                                        
+                                        ?>">
                                 </div>
 
                                 <?php
