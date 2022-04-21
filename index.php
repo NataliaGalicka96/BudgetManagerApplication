@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+if ((isset($_SESSION['loggedUser']))&&($_SESSION['loggedUser']==true))
+{
+	header('Location: menu.php');
+	exit();
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,33 +59,62 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-5">
-                    <div class="login">
+                    <div class="login" style="height: auto;">
                         <div class="title"><span>Member login</span></div>
-                        <form action = "zaloguj.php" method="post">
+                        
+                        <form action = "logIn.php" method="post">
+
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-user"></i>
-                                    <input type="email" class="form-control" id="exampleInputEmail1"
-                                        placeholder="Email" name="email" required>
+                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                        placeholder="Username" name="username" required
+                                        value="<?php
+                                        if(isset($_COOKIE['username'])) 
+                                        {
+                                            echo $_COOKIE['username'];
+                                        }
+                                        ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <i class="fa-solid fa-lock"></i>
                                     <input type="password" class="form-control" id="exampleInputPassword1"
-                                        placeholder="Password" name="password" required>
+                                        placeholder="Password" name="password" required
+                                        value="<?php
+                                        if(isset($_COOKIE['password'])) 
+                                        {
+                                            echo $_COOKIE['password'];
+                                        }
+                                        ?>">
                                 </div>
                             </div>
                             <div class="row mb-3 form-check">
                                 <div class="pass">
                                     <div class="input-group">
-                                        <input type="checkbox" class="form-check-input me-2" id="remember">
+                                        <input type="checkbox" class="form-check-input me-2" id="remember" name="remember_checkbox"
+                                        value="<?php
+                                        if(isset($_COOKIE['username'])) 
+                                        {
+                                            ?> checked <?php } ?>
+                                        }
+                                        ?>">
                                         <label class="form-check-label" for="remember">Remember me</label>
                                     </div>
+
                                     <a href="#">Forgot password?</a>
                                 </div>
                             </div>
                             <div class="button"><button type="submit" class="btn btn-warning">Sign in</button></div>
+
+                            <?php
+                                if (isset($_SESSION['bad_attempt'])) 
+                                {
+                                    echo '<div class="error mt-1 text-center">'.$_SESSION['bad_attempt'].'</div>';
+                                    unset($_SESSION['bad_attempt']);
+                                }
+                            ?>
 
                             <div class="signup">Not a memeber? <a href="registration.php"> Sign up now!</a></div>
                         </form>
