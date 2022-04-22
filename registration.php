@@ -142,10 +142,9 @@ if(isset($_SESSION['loggedUser'])){
             $query->bindValue(':username', $username, PDO::PARAM_STR);
             $query->bindValue(':pass', $passwordHash, PDO::PARAM_STR);
 
-            $query->execute();
+            if($query->execute())
 
-            $_SESSION['successfulRegistration']=true; //nowa sesja
-            header ('Location: welcome.php');
+
             
 
             $sql = "SELECT id FROM users WHERE username = :username";
@@ -159,26 +158,30 @@ if(isset($_SESSION['loggedUser'])){
             $userId = $result['id'];
         
 
-            $sql="INSERT INTO incomes_category_assigned_to_users (user_id, name)
+            $sql1="INSERT INTO incomes_category_assigned_to_users (user_id, name)
             SELECT users.id, incomes_category_default.name FROM users, incomes_category_default WHERE users.id = $userId"; 
             /* VALUES(NULL,$userId, 1),(NULL,$userId, 2),(NULL,$userId, 3),(NULL,$userId, 4)";*/
             
-            $assignIncomeCategoriesToUser = $db->prepare($sql);
+            $assignIncomeCategoriesToUser = $db->prepare($sql1);
             $assignIncomeCategoriesToUser -> execute();
 
 
-            $sql="INSERT INTO expenses_category_assigned_to_users (user_id, name)
-            SELECT users.id, expenses_category_default.name FROM users, expenses_category_default WHERE users.id = $userId";
             
-            $assignExpenseCategoriesToUser = $db->prepare($sql);
-            $assignExpenseCategoriesToUser -> execute();
-
-            $sql="INSERT INTO payment_methods_assigned_to_users (user_id, name)
-            SELECT users.id, payment_methods_default .name FROM users, payment_methods_default  WHERE users.id = $userId";
+            $sql2="INSERT INTO payment_methods_assigned_to_users (user_id, name)
+            SELECT users.id, payment_methods_default.name FROM users, payment_methods_default  WHERE users.id = $userId";
 
     
-            $assignPaymentMethodsToUser = $db->prepare($sql);
+            $assignPaymentMethodsToUser = $db->prepare($sql2);
             $assignPaymentMethodsToUser -> execute();
+
+            $sql3="INSERT INTO expenses_category_assigned_to_users (user_id, name)
+            SELECT users.id, expenses_category_default.name FROM users, expenses_category_default WHERE users.id = $userId";
+            
+            $assignExpenseCategoriesToUser = $db->prepare($sql3);
+            $assignExpenseCategoriesToUser -> execute();
+
+            $_SESSION['successfulRegistration']=true; //nowa sesja
+            header ('Location: welcome.php');
 
         }
     else{

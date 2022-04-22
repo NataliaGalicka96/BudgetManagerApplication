@@ -24,7 +24,7 @@ if (!isset($_SESSION['loggedUser']))
 
         $expenseCategoriesOfLoggedUser = $expenseCategoryQuery -> fetchAll();
 
-        print_r($expenseCategoriesOfLoggedUser);
+       // print_r($expenseCategoriesOfLoggedUser);
         
         $sql2 = "SELECT pma.id, pma.name
         FROM  payment_methods_assigned_to_users AS pma
@@ -36,7 +36,7 @@ if (!isset($_SESSION['loggedUser']))
 
         $paymentMethodOfLoggedUser = $paymentMethod -> fetchAll();
 
-        print_r($paymentMethodOfLoggedUser);
+        // print_r($paymentMethodOfLoggedUser);
 
         $_SESSION['expenseAdded'] = false;
 
@@ -44,7 +44,7 @@ if (!isset($_SESSION['loggedUser']))
             if(isset($_POST['amount']))
             {
                 
-                if(!empty($_POST['amount']) && !empty($_POST['date']) && isset($_POST['category']))
+                if(!empty($_POST['amount']) && !empty($_POST['date']) && isset($_POST['category']) && isset($_POST['payment']))
                 {
                     //Amount musi być liczbą, maksymalnie dwa miejsca po przecinku
                     //sprawdzam poprawność wprowadzonych danych
@@ -89,7 +89,7 @@ if (!isset($_SESSION['loggedUser']))
                     {
                         if($method['name']==$expensePaymentMethod)
                         {
-                            echo $method['name'];
+                    
                             $methodId = $method['id'];
                         }
                         
@@ -182,7 +182,7 @@ if (!isset($_SESSION['loggedUser']))
 
 </head>
 
-<body onload="countDown();">
+<body>
 
     <div class="main">
         <nav class="navbar navbar-expand-lg navbar-dark">
@@ -224,11 +224,14 @@ if (!isset($_SESSION['loggedUser']))
                     <div class="expense">
                         <div class="title"><span>Add Expense</span></div>
                         <form method="post">
+                        
                         <?php
-                                    if(isset($_SESSION['error_expenseAdded'])){
+                                    if(isset($_SESSION['error_expenseAdded']))
+                                    {
                                         echo '<div class="error">'.$_SESSION['error_expenseAdded'].'</div>';
                                         unset($_SESSION['error_expenseAdded']);
-                                    }else if(isset($_SESSION['expenseAdded'])){
+                                    }else if(isset($_SESSION['expenseAdded']))
+                                    {
                                         echo '<div class="complete">'.$_SESSION['expenseAdded'].'</div>';
                                         unset($_SESSION['expenseAdded']);
                                     }
@@ -240,7 +243,15 @@ if (!isset($_SESSION['loggedUser']))
                                 <div class="input-group">
                                     <label for="amount" class="form-label">Amount</label>
                                     <input id="amount" class="form-control" type="number" step="0.01" min="0"
-                                        aria-label="default input example" name="amount">
+                                        aria-label="default input example" name="amount"
+                                        value="<?php
+                                        
+                                        if(isset($_SESSION['fr_expenseAmount'])){
+                                            echo $_SESSION['fr_expenseAmount'];
+                                            unset($_SESSION['fr_expenseAmount']);
+                                        }
+                                        
+                                        ?>">
                                 </div>
 
                                 <?php
@@ -251,58 +262,78 @@ if (!isset($_SESSION['loggedUser']))
                                 ?>
 
 
+
                             </div>
+
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <label for="date" class="form-label">Date</label>
                                     <input id="date" class="form-control" type="date" aria-label="default input example" name="date"
-                                        required>
+                                        required value="<?php
+                                        
+                                        if(isset($_SESSION['fr_expenseDate'])){
+                                            echo $_SESSION['fr_expenseDate'];
+                                            unset($_SESSION['fr_expenseDate']);
+                                        }
+                                        
+                                    ?>">
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <div class="input-group">
+                                    
                                     <label for="exampleDataList2" class="form-label text-center">Payment Methods</label>
-                                    <input class="form-control" list="datalistOptions1" id="exampleDataList"
-                                        aria-label="default input example" name="payment" required>
-                                    <datalist id="datalistOptions1">
-
+                                    <select class="form-control userInput labeledInput" name="payment" id="exampleDataList2" >
                                     <?php
 
-                                    foreach($paymentMethodOfLoggedUser as $method)
-                                        {
-                                            echo '<option value='.$method['name'].'>';
+                                                
+                                            foreach($paymentMethodOfLoggedUser as $method)
+                                            {
+                                                                                       
+                                                    echo '<option selected>'.$method['name']."</option>";
+                                        
+                                            }
                                             
-                                        }    
-
-
+                                    
                                     ?>
+                                    </select>
 
-
-                                    </datalist>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
                                 <div class="input-group">
-                                    <label for="exampleDataList" class="form-label">Category</label>
-                                    <input class="form-control" list="datalistOptions2" id="exampleDataList"
-                                        aria-label="default input example" name="category" required>
-                                    <datalist id="datalistOptions2">
 
+                                    <label for="exampleDataList" class="form-label">Category</label>
+                                    <select class="form-control userInput labeledInput" name="category" id="exampleDataList">
                                     <?php
+
+                                                
                                             foreach($expenseCategoriesOfLoggedUser as $category)
-                                            {
-                                                echo '<option value='.$category['name'].'>'; 
-                                            }                                    
-                                
+                                            {                              
+                                                    echo '<option selected>'.$category['name']."</option>";
+                                            }
+                                            
+                                    
                                     ?>
-                                    </datalist>
+                                    </select>
                                 </div>
                             </div>
+                            
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <label for="area" class="form-label">Comments</label>
                                     <input id="area" class="form-control" type="text" name="comment"
-                                        aria-label="default input example">
+                                        aria-label="default input example"
+                                        value="<?php
+                                        
+                                        if(isset( $_SESSION['fr_expenseComment'])){
+                                            echo  $_SESSION['fr_expenseComment'];
+                                            unset( $_SESSION['fr_expenseComment']);
+                                        }
+                                        
+                                        ?>">
                                 </div>
                                 
                                 <?php

@@ -8,6 +8,12 @@ if (!isset($_SESSION['loggedUser']))
 {
     header('Location: index.php');
     exit();
+}else{
+    require_once 'database.php';
+
+
+   // $sql="SELECT "
+   // $expenses = $db -> prepare()
 }
 	
 ?>
@@ -79,11 +85,11 @@ if (!isset($_SESSION['loggedUser']))
         </nav>
         <div class="container">
             <div class="row ms-4">
-                <select class="custom-select" id="period">
-                    <option value="1" selected>Current Month</option>
-                    <option value="2">Previous Month</option>
-                    <option value="3">Period of time</option>
-                    <option value="4">Custom</option>
+                <select class="custom-select" id="period" name = "selectPeriodTime">
+                    <option name="1" selected>Current Month</option>
+                    <option name="2">Previous Month</option>
+                    <option name="3">Period of time</option>
+                    <option name="4">Custom</option>
                 </select>
             </div>
             <div class="row text-center " id="content">
