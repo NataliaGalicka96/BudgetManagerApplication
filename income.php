@@ -7,7 +7,9 @@
 	{
 		header('Location: index.php');
 		exit();
-	}else
+	}
+    
+    else
     {
         require_once "database.php";
 
@@ -25,7 +27,7 @@
 
         $incomeCategoriesOfLoggedUser = $incomeCategoryQuery -> fetchAll();
 
-        print_r($incomeCategoriesOfLoggedUser);
+       // print_r($incomeCategoriesOfLoggedUser);
 
 
         $_SESSION['incomeAdded'] = false;
@@ -71,7 +73,7 @@
                         
                     }
             
-                    echo $incomeCatId;
+                    
 
                     $_SESSION['fr_incomeAmount']=$incomeAmount;
                     $_SESSION['fr_incomeDate'] = $incomeDate;
@@ -95,13 +97,13 @@
                     }
  
                     
-                }
+            }
                 else{
                     $_SESSION['incomeAdded'] = false;
                     $_SESSION['error_incomeAdded'] = "Fill in the necessary fields";
                 }
 
-            }
+         }
         
 
     }
@@ -252,22 +254,27 @@
                             <div class="row mb-3">
                                 <div class="input-group">
                                     <label for="exampleDataList" class="form-label">Category</label>
-                                    <input class="form-control" list="datalistOptions" id="exampleDataList"
-                                        aria-label="default input example" name="category" required>
-                                    <datalist id="datalistOptions">
-
+                                    <select class="form-control userInput labeledInput" name="category" id="exampleDataList">
                                     <?php
-                                            
+
+                                                
                                             foreach($incomeCategoriesOfLoggedUser as $category)
                                             {
-                                                if(isset($_SESSION['fr_incomeCategory']))
-                                                echo '<option value='.$category['name'].'>';
-                                                unset($_SESSION['fr_incomeCategory']);
+                                                if(isset($_SESSION['fr_incomeCategory']) && $_SESSION['fr_incomeCategory'] == $category['name']) {
+                                                                                            
+                                                    echo '<option selected>'.$category['name']."</option>";
+                                                    unset($_SESSION['fr_incomeCategory']);
+                                                } else {
+                                                    
+                                                    echo "<option>".$category['name']."</option>";
+                                                }
+                                            
+                                               
                                             }
                                             
                                     
                                     ?>
-                                    </datalist>
+                                    </select>
                                 </div>
                             </div>
 

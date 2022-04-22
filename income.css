@@ -6,7 +6,7 @@ body {
 
 .main {
     width: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.5)50%, rgba(0, 0, 0, 0.5)50%), url("20.jpg");
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("20.jpg");
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -58,7 +58,6 @@ body {
 .incomes {
     background: rgb(23 22 53 / 75%);
     border: 15px solid rgba(92, 91, 141, 0.25);
-
     color: #F0D000;
     height: auto;
     margin-top: 20px;
@@ -83,6 +82,17 @@ form .row input {
     transition: all 0.3s ease;
     width: 300px;
     height: 100%;
+
+
+}
+
+form .row select {
+    border: 2px solid rgb(23 22 53);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    width: 300px;
+    height: 100%;
+
 
 }
 
