@@ -82,8 +82,8 @@ if (!isset($_SESSION['loggedUser']))
             <form method="post">
                 <div  class="row ms-4">
                 <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
-                    <option value="balance.php" selected>Current Month</option>
-                    <option value="balancePrevious.php">Previous Month</option>
+                    <option value="balance.php" >Current Month</option>
+                    <option value="balancePrevious.php" selected>Previous Month</option>
                     <option value="balancePeriod.php">Period of time</option>
                 </select> 
             </div>
@@ -94,11 +94,12 @@ if (!isset($_SESSION['loggedUser']))
                     $currentDate = date('Y-m-d');
                     
                     // First day of the month.
-                    $firstDayOfCurrentDate = date('Y-m-01', strtotime($currentDate));
+                    $firstDayOfPreviousMonth = date('Y-m-d', strtotime('first day of last month'));
+                    $lastDayOfPreviousMonth = date('Y-m-d', strtotime('last day of last month'));
+                    
 
-                    echo '<span id="Date"> Balance from: '.$firstDayOfCurrentDate.' to '.$currentDate.'</span>';
+                    echo '<span id="Date"> Balance from: '.$firstDayOfPreviousMonth.' to '.$lastDayOfPreviousMonth.'</span>';
 
-                    //Period
 
 
                 ?>
@@ -124,8 +125,8 @@ if (!isset($_SESSION['loggedUser']))
 
                         $expenseCategoryQuery = $db -> prepare($sql);
                         $expenseCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
-                        $expenseCategoryQuery -> bindValue(':startDate', $firstDayOfCurrentDate, PDO::PARAM_STR);
-                        $expenseCategoryQuery -> bindValue(':endDate', $currentDate, PDO::PARAM_STR);
+                        $expenseCategoryQuery -> bindValue(':startDate', $firstDayOfPreviousMonth, PDO::PARAM_STR);
+                        $expenseCategoryQuery -> bindValue(':endDate', $lastDayOfPreviousMonth, PDO::PARAM_STR);
                         $expenseCategoryQuery -> execute();
 
                         $expenseCategoriesOfLoggedUser = $expenseCategoryQuery -> fetchAll();
@@ -212,10 +213,11 @@ if (!isset($_SESSION['loggedUser']))
                     </script>
 
                         <?php
-
+                           
                             echo '<p class="fs-3">Pie chart of expenses</p>';
                             
                             echo '<div  class="d-flex justify-content-center" id="piechart_3d"></div>';
+                            
 
 
                         }
@@ -243,8 +245,8 @@ if (!isset($_SESSION['loggedUser']))
 
                     $incomeCategoryQuery = $db -> prepare($sql);
                     $incomeCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
-                    $incomeCategoryQuery -> bindValue(':startDate', $firstDayOfCurrentDate, PDO::PARAM_STR);
-                    $incomeCategoryQuery -> bindValue(':endDate', $currentDate, PDO::PARAM_STR);
+                    $incomeCategoryQuery -> bindValue(':startDate', $firstDayOfPreviousMonth, PDO::PARAM_STR);
+                    $incomeCategoryQuery -> bindValue(':endDate', $lastDayOfPreviousMonth, PDO::PARAM_STR);
                     $incomeCategoryQuery -> execute();
 
                     $incomeCategoriesOfLoggedUser = $incomeCategoryQuery -> fetchAll();
@@ -404,7 +406,7 @@ if (!isset($_SESSION['loggedUser']))
                     </div>
                 </div>
             </div>
-                        </form>
+                        
         </div>
     </div>
 

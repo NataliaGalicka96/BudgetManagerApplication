@@ -9,6 +9,19 @@ if (!isset($_SESSION['loggedUser']))
     header('Location: index.php');
     exit();
 }
+
+if (isset($_POST['date1']))
+{
+  
+//period walidation ok
+$all_ok = true;
+
+$_SESSION['date1'] = $_POST['date1'];
+$_SESSION['date2'] = $_POST['date2'];
+
+require_once "database.php";
+$current_month = date('m');
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,13 +51,13 @@ if (!isset($_SESSION['loggedUser']))
     <link rel="stylesheet" href="balance.css">
 
     <title>Balance</title>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
 </head>
 
 <body>
 
     <div class="main">
+
+
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand"><i class="fa-solid fa-hand-holding-dollar me-2"></i>PERSONAL BUDGET</a>
@@ -79,22 +92,72 @@ if (!isset($_SESSION['loggedUser']))
             </div>
         </nav>
         <div class="container">
-            <form method="post">
-                <div  class="row ms-4">
-                <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
-                    <option value="balance.php" selected>Current Month</option>
-                    <option value="balancePrevious.php">Previous Month</option>
-                    <option value="balancePeriod.php">Period of time</option>
-                </select> 
+        <?php
+
+echo $_POST['date1'];
+echo $_POST['date2'];
+
+?>
+<div class="dropdown-divider"></div>
+								
+								<div>Niestandardowe
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#periodDate">Podaj datę</button>
+								</div>
+
+                
+
+<!-- Modal -->
+<div class="modal fade" id="periodDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Podaj datę</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>
+				  <div class="modal-body">
+					<form action="balancePeriod.php" method="post">
+					  <div class="form-group">
+						<label class="col-form-label">Podaj zakres dat, którego ma dotyczyć bilans.</label>
+						<label>Od: <input type="date" class="form-control" name="date1"></label>
+						<label>Do: <input type="date" class="form-control" name="date2"></label>
+					  </div>
+					
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-modal-cancel" data-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-modal-ok">Akceptuj</button>
+				  </div>
+				  </form>
+				</div>
+			  </div>
+			</div>
+
+                <!--
+            <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
+                <option value="balance.php" >Current Month</option>
+                <option value="balancePrevious.php" >Previous Month</option>
+                <option value="balancePeriod.php"selected>Period of time</option>
+                
+            </select> 
+-->
+
+
+									
+
             </div>
             <div class="row text-center " id="content" name="periodTime">
                 <?php
+                    
                     
                     //currentDate
                     $currentDate = date('Y-m-d');
                     
                     // First day of the month.
                     $firstDayOfCurrentDate = date('Y-m-01', strtotime($currentDate));
+                    
+                    
 
                     echo '<span id="Date"> Balance from: '.$firstDayOfCurrentDate.' to '.$currentDate.'</span>';
 
@@ -106,130 +169,94 @@ if (!isset($_SESSION['loggedUser']))
             <div class="row" id="Table">
                 <div class="col-12 col-xl-4 text-center">
 
-                    <?php
+                <?php
 
-                    // require_once "database.php";
-
-                        $loggedUserId = $_SESSION['logged_id'];
-
-                        $sql = "SELECT eca.name ,SUM(e.amount) AS sum
-                        FROM expenses e
-                        INNER JOIN expenses_category_assigned_to_users eca
-                        ON e.expense_category_assigned_to_user_id = eca.id
-                        WHERE e.user_id =:userId AND
-                        e.date_of_expense BETWEEN :startDate AND :endDate
-                        GROUP BY eca.name
-                        ORDER BY SUM(e.amount)";
-
-
-                        $expenseCategoryQuery = $db -> prepare($sql);
-                        $expenseCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
-                        $expenseCategoryQuery -> bindValue(':startDate', $firstDayOfCurrentDate, PDO::PARAM_STR);
-                        $expenseCategoryQuery -> bindValue(':endDate', $currentDate, PDO::PARAM_STR);
-                        $expenseCategoryQuery -> execute();
-
-                        $expenseCategoriesOfLoggedUser = $expenseCategoryQuery -> fetchAll();
-
-
-                        //print_r($expenseCategoriesOfLoggedUser);
-
-                        echo<<<END
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr id="titleOfTable1">
-                                    <th colspan="2">Expenses</th>
-                                </tr>
-                                <tr>
-                                    <th> Category </th>
-                                    <th> Total  </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                        END;
-
-                        $sumOfAllExpenses = 0;
-                        foreach($expenseCategoriesOfLoggedUser as $category)
-                        {
-                            
-                            echo '<tr>';
-                            echo '<td>'.$category['name'].'</td>';
-                            echo '<td>'. $category['sum'].'</td>';
-                            echo '</tr>' ;
-
-                            $sumOfAllExpenses+=$category['sum'];
-                                
-                        }
-
-                        $sumOfAllExpenses = number_format( $sumOfAllExpenses, 2, '.', '' );
-                        
-                        echo<<<END
-                        
-                        <tr>
-                                <th>Sum</th>
-                                <td>$sumOfAllExpenses</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        END;
-
-                        $rows_count = $expenseCategoryQuery->rowCount();
-
-                        if($rows_count>0){
-
-                    ?>
-
-                    <script type="text/javascript">
-                        google.charts.load("current", {packages:["corechart"]});
-                        google.charts.setOnLoadCallback(drawChart);
-                
-                
-                        function drawChart() {
-                        var data = google.visualization.arrayToDataTable([
-                        ['Category', 'Amount'],
-                        <?php
-                            foreach($expenseCategoriesOfLoggedUser as $category){
-                                
-                                extract($category);
-
-                                echo  "['$name', $sum],";
-                            }
-
-                        ?>
-                        ]);
-
-                        var options = {
-                        is3D: true,
-                        legend: {
-                        textStyle: { color: 'white' }
-                        },
-                        backgroundColor: 'transparent',
-                        };
-
-                        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-                        chart.draw(data, options);
-                        }
-                    </script>
-
-                        <?php
-
-                            echo '<p class="fs-3">Pie chart of expenses</p>';
-                            
-                            echo '<div  class="d-flex justify-content-center" id="piechart_3d"></div>';
-
-
-                        }
-                    ?>
-
-                </div>
-                <div class="col-12 col-xl-4 text-center">
-
-                    <?php
-
-                    //require_once "database.php";
+                    require_once "database.php";
 
                     $loggedUserId = $_SESSION['logged_id'];
 
+                    
+
+                    $sql = "SELECT eca.name ,SUM(e.amount) AS sum
+                    FROM expenses e
+                    INNER JOIN expenses_category_assigned_to_users eca
+                    ON e.expense_category_assigned_to_user_id = eca.id
+                    WHERE e.user_id =:userId AND
+                    e.date_of_expense BETWEEN :startDate AND :endDate
+                    GROUP BY eca.name
+                    ORDER BY SUM(e.amount)";
+
+
+                    $expenseCategoryQuery = $db -> prepare($sql);
+                    $expenseCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
+                    $expenseCategoryQuery -> bindValue(':startDate', $firstDayOfCurrentDate, PDO::PARAM_STR);
+                    $expenseCategoryQuery -> bindValue(':endDate', $currentDate, PDO::PARAM_STR);
+                    $expenseCategoryQuery -> execute();
+
+                    $expenseCategoriesOfLoggedUser = $expenseCategoryQuery -> fetchAll();
+
+                    //print_r($expenseCategoriesOfLoggedUser);
+
+                    echo<<<END
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr id="titleOfTable1">
+                                <th colspan="2">Expenses</th>
+                            </tr>
+                            <tr>
+                                <th> Category </th>
+                                <th> Total  </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    END;
+
+                    $sumOfAllExpenses = 0;
+                    foreach($expenseCategoriesOfLoggedUser as $category)
+                    {
+                        
+                        echo '<tr>';
+                        echo '<td>'.$category['name'].'</td>';
+                        echo '<td>'. $category['sum'].'</td>';
+                        echo '</tr>' ;
+
+                        $sumOfAllExpenses+=$category['sum'];
+                            
+                    }
+
+                    $sumOfAllExpenses = number_format( $sumOfAllExpenses, 2, '.', '' );
+                    
+
+
+                    
+                    echo<<<END
+
+                    
+
+                    
+                    <tr>
+                            <th>Sum</th>
+                            <td>$sumOfAllExpenses</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    END;
+                ?>
+                
+
+
+                </div>
+                <div class="col-12 col-xl-8 text-center">
+                    <div class="row gx-0">
+                        <div class=" col-12 col-xl-6 text-center">
+                        <?php
+
+                    require_once "database.php";
+
+                    $loggedUserId = $_SESSION['logged_id'];
+
+                    
 
                     $sql = "SELECT ica.name ,SUM(i.amount) AS sum
                     FROM incomes i
@@ -280,7 +307,12 @@ if (!isset($_SESSION['loggedUser']))
 
                     $sumOfAllIncomes = number_format( $sumOfAllIncomes, 2, '.', '' );
                     
+
+
+                    
                     echo<<<END
+
+                    
 
                     
                     <tr>
@@ -291,57 +323,12 @@ if (!isset($_SESSION['loggedUser']))
                     </table>
 
                     END;
-
-                    $rows_count = $incomeCategoryQuery->rowCount();
-
-                    if($rows_count>0){
-
-                        ?>
-        
-                        <script type="text/javascript">
-                            google.charts.load("current", {packages:["corechart"]});
-                            google.charts.setOnLoadCallback(drawChart);
-                    
-                    
-                            function drawChart() {
-                            var data = google.visualization.arrayToDataTable([
-                            ['Category', 'Amount'],
-                            <?php
-                                foreach($incomeCategoriesOfLoggedUser as $category){
-                                    
-                                    extract($category);
-        
-                                    echo  "['$name', $sum],";
-                                }
-        
-                            ?>
-                            ]);
-        
-                            var options = {
-                            is3D: true,
-                            legend: {
-                            textStyle: { color: 'white' }
-                            },
-                            backgroundColor: 'transparent',
-                            };
-        
-                            var chart = new google.visualization.PieChart(document.getElementById('piechart_incomes'));
-                            chart.draw(data, options);
-                            }
-                        </script>
-        
-                    <?php
-
-                        echo '<p class="fs-3">Pie chart of incomes</p>';
-                        
-                        echo '<div class="d-flex justify-content-center" id="piechart_incomes"></div>';
+                ?>
 
 
-                     }
-                    ?>
-  
-                </div>
-                <div class="col-12 col-xl-4 text-center">
+                            
+                        </div>
+                        <div class="col-12 col-xl-6 text-center">
                             <?php
                             $balance = $sumOfAllIncomes-$sumOfAllExpenses;
                             $balance = number_format( $balance, 2, '.', '' );
@@ -388,24 +375,64 @@ if (!isset($_SESSION['loggedUser']))
 
                                 <div class="alert alert-danger" role="alert">
 
-                                Ups! You are getting into Debt! Try to plan your expenses better!
+                                Congratulations! You manage your finances bad!
                             </div>
                             END;
 
                             }
+
+
                             ?>
+                            <div class="alert alert-success" role="alert">
 
+                                Congratulations! You manage your finances great!
+                            </div>
                         </div>
 
-                        
+                        <div class="col-12 col-xl-6 text-center">
+                            <div class="chart mt-5">
+                                <p class="fs-3">Pie chart of expenses</p>
+                                <div id="my-pie-chart-container">
+                                    <div id="my-pie-chart"></div>
+                                    <div id="legenda">
+                                        <div class="entry">
+                                            <div id="color-brown" class="entry-color"></div>
+                                            <div class="entry-text">Other expenses</div>
+                                        </div>
+                                        <div class="entry">
+                                            <div id="color-black" class="entry-color"></div>
+                                            <div class="entry-text">Food</div>
+                                        </div>
+                                        <div class="entry">
+                                            <div id="color-blue" class="entry-color"></div>
+                                            <div class="entry-text">Training</div>
+                                        </div>
+                                        <div class="entry">
+                                            <div id="color-green" class="entry-color"></div>
+                                            <div class="entry-text">Entertainment</div>
+                                        </div>
+                                        <div class="entry">
+                                            <div id="color-yellow" class="entry-color"></div>
+                                            <div class="entry-text">Kids</div>
+                                        </div>
+                                        <div class="entry">
+                                            <div id="color-orange" class="entry-color"></div>
+                                            <div class="entry-text">Transport</div>
+                                        </div>
+                                        <div class="entry">
+                                            <div id="color-red" class="entry-color"></div>
+                                            <div class="entry-text">Flat</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
 
                         </div>
-
                     </div>
                 </div>
             </div>
-                        </form>
-        </div>
+
     </div>
 
 

@@ -90,15 +90,9 @@ if (!isset($_SESSION['loggedUser']))
             <div class="row text-center " id="content" name="periodTime">
                 <?php
                     
-                    //currentDate
-                    $currentDate = date('Y-m-d');
-                    
-                    // First day of the month.
-                    $firstDayOfCurrentDate = date('Y-m-01', strtotime($currentDate));
+                    //date 1
 
-                    echo '<span id="Date"> Balance from: '.$firstDayOfCurrentDate.' to '.$currentDate.'</span>';
-
-                    //Period
+                    //date 2 
 
 
                 ?>
