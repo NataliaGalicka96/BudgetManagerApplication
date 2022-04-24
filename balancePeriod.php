@@ -9,6 +9,18 @@ if (!isset($_SESSION['loggedUser']))
     header('Location: index.php');
     exit();
 }
+
+if (isset($_POST['date1']))
+	{
+		
+	//period walidation ok
+	$all_ok = true;
+
+	$_SESSION['date1'] = $_POST['date1'];
+	$_SESSION['date2'] = $_POST['date2'];
+
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -79,28 +91,55 @@ if (!isset($_SESSION['loggedUser']))
             </div>
         </nav>
         <div class="container">
-
-                <div  class="row ms-4">
+        <div  class="row ms-4">
                 <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
                     <option value="balance.php" selected>Current Month</option>
                     <option value="balancePrevious.php">Previous Month</option>
                     <option value="balancePeriod.php">Period of time</option>
                 </select> 
             </div>
-            <div class="row text-center " id="content" name="periodTime">
+
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#periodDate">Choose period time</button>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="periodDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Choose date</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="balancePeriod.php" method="post">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Choose period time from which you want to see the balance.</label>
+                                            <label>From: <input type="date" class="form-control" name="date1"></label>
+                                            <label>To: <input type="date" class="form-control" name="date2"></label>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-modal-cancel" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-modal-ok">Accept</button>
+                                    </div>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+
+           
+
+                <div class="row text-center mt-4" id="content" name="periodTime">
                 <?php
-                    
-                    //currentDate
-                    $currentDate = date('Y-m-d');
-                    
-                    // First day of the month.
-                    $firstDayOfCurrentDate = date('Y-m-01', strtotime($currentDate));
 
-                    echo '<span id="Date"> Balance from: '.$firstDayOfCurrentDate.' to '.$currentDate.'</span>';
-
-                    //Period
-
-
+                    if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
+                    echo '<span id="Date"> Balance from: '.$_SESSION['date1'].' to '.$_SESSION['date2'].'</span>';
+                    }else{
+                        echo '<span id="Date"> You must choose period time which you want to see your balance. </span>';
+                    }
                 ?>
             </div>
             <div class="row" id="Table">
@@ -109,6 +148,8 @@ if (!isset($_SESSION['loggedUser']))
                     <?php
 
                     // require_once "database.php";
+
+                    
 
                         $loggedUserId = $_SESSION['logged_id'];
 
@@ -121,15 +162,17 @@ if (!isset($_SESSION['loggedUser']))
                         GROUP BY eca.name
                         ORDER BY SUM(e.amount)";
 
+                        if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
 
                         $expenseCategoryQuery = $db -> prepare($sql);
                         $expenseCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
-                        $expenseCategoryQuery -> bindValue(':startDate', $firstDayOfCurrentDate, PDO::PARAM_STR);
-                        $expenseCategoryQuery -> bindValue(':endDate', $currentDate, PDO::PARAM_STR);
+                        $expenseCategoryQuery -> bindValue(':startDate', $_SESSION['date1'], PDO::PARAM_STR);
+                        $expenseCategoryQuery -> bindValue(':endDate', $_SESSION['date2'], PDO::PARAM_STR);
                         $expenseCategoryQuery -> execute();
+                        
 
                         $expenseCategoriesOfLoggedUser = $expenseCategoryQuery -> fetchAll();
-
+                        
 
                         //print_r($expenseCategoriesOfLoggedUser);
 
@@ -219,6 +262,7 @@ if (!isset($_SESSION['loggedUser']))
 
 
                         }
+                    }
                     ?>
 
                 </div>
@@ -240,11 +284,11 @@ if (!isset($_SESSION['loggedUser']))
                     GROUP BY ica.name
                     ORDER BY SUM(i.amount)";
 
-
+                    if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
                     $incomeCategoryQuery = $db -> prepare($sql);
                     $incomeCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
-                    $incomeCategoryQuery -> bindValue(':startDate', $firstDayOfCurrentDate, PDO::PARAM_STR);
-                    $incomeCategoryQuery -> bindValue(':endDate', $currentDate, PDO::PARAM_STR);
+                    $incomeCategoryQuery -> bindValue(':startDate', $_SESSION['date1'], PDO::PARAM_STR);
+                    $incomeCategoryQuery -> bindValue(':endDate', $_SESSION['date2'], PDO::PARAM_STR);
                     $incomeCategoryQuery -> execute();
 
                     $incomeCategoriesOfLoggedUser = $incomeCategoryQuery -> fetchAll();
@@ -336,13 +380,15 @@ if (!isset($_SESSION['loggedUser']))
                         
                         echo '<div class="d-flex justify-content-center" id="piechart_incomes"></div>';
 
-
+                        }
                      }
+                     
                     ?>
   
                 </div>
                 <div class="col-12 col-xl-4 text-center">
                             <?php
+                    if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
                             $balance = $sumOfAllIncomes-$sumOfAllExpenses;
                             $balance = number_format( $balance, 2, '.', '' );
 
@@ -393,6 +439,7 @@ if (!isset($_SESSION['loggedUser']))
                             END;
 
                             }
+                        }
                             ?>
 
                         </div>
@@ -404,14 +451,14 @@ if (!isset($_SESSION['loggedUser']))
                     </div>
                 </div>
             </div>
-                       
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
+
 </body>
 
 </html>
