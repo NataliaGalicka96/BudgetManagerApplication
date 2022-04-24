@@ -93,9 +93,9 @@ if (isset($_POST['date1']))
         <div class="container">
         <div  class="row ms-4">
                 <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
-                    <option value="balance.php" selected>Current Month</option>
+                    <option value="balance.php" >Current Month</option>
                     <option value="balancePrevious.php">Previous Month</option>
-                    <option value="balancePeriod.php">Period of time</option>
+                    <option value="balancePeriod.php" selected>Period of time</option>
                 </select> 
             </div>
 
