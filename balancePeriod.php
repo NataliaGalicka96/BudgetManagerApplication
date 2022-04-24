@@ -91,6 +91,13 @@ if (isset($_POST['date1']))
             </div>
         </nav>
         <div class="container">
+        <div  class="row ms-4">
+                <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
+                    <option value="balance.php" selected>Current Month</option>
+                    <option value="balancePrevious.php">Previous Month</option>
+                    <option value="balancePeriod.php">Period of time</option>
+                </select> 
+            </div>
 
         <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#periodDate">Choose period time</button>
 
@@ -128,18 +135,11 @@ if (isset($_POST['date1']))
                 <div class="row text-center mt-4" id="content" name="periodTime">
                 <?php
 
-
-                    
-
+                    if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
                     echo '<span id="Date"> Balance from: '.$_SESSION['date1'].' to '.$_SESSION['date2'].'</span>';
-
-                    //date 1
-
-                    //date 2 
-
-
-
-
+                    }else{
+                        echo '<span id="Date"> You must choose period time which you want to see your balance. </span>';
+                    }
                 ?>
             </div>
             <div class="row" id="Table">
@@ -148,6 +148,8 @@ if (isset($_POST['date1']))
                     <?php
 
                     // require_once "database.php";
+
+                    
 
                         $loggedUserId = $_SESSION['logged_id'];
 
@@ -160,15 +162,17 @@ if (isset($_POST['date1']))
                         GROUP BY eca.name
                         ORDER BY SUM(e.amount)";
 
+                        if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
 
                         $expenseCategoryQuery = $db -> prepare($sql);
                         $expenseCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
                         $expenseCategoryQuery -> bindValue(':startDate', $_SESSION['date1'], PDO::PARAM_STR);
                         $expenseCategoryQuery -> bindValue(':endDate', $_SESSION['date2'], PDO::PARAM_STR);
                         $expenseCategoryQuery -> execute();
+                        
 
                         $expenseCategoriesOfLoggedUser = $expenseCategoryQuery -> fetchAll();
-
+                        
 
                         //print_r($expenseCategoriesOfLoggedUser);
 
@@ -258,6 +262,7 @@ if (isset($_POST['date1']))
 
 
                         }
+                    }
                     ?>
 
                 </div>
@@ -279,7 +284,7 @@ if (isset($_POST['date1']))
                     GROUP BY ica.name
                     ORDER BY SUM(i.amount)";
 
-
+                    if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
                     $incomeCategoryQuery = $db -> prepare($sql);
                     $incomeCategoryQuery -> bindValue(':userId', $loggedUserId, PDO::PARAM_INT);
                     $incomeCategoryQuery -> bindValue(':startDate', $_SESSION['date1'], PDO::PARAM_STR);
@@ -375,13 +380,15 @@ if (isset($_POST['date1']))
                         
                         echo '<div class="d-flex justify-content-center" id="piechart_incomes"></div>';
 
-
+                        }
                      }
+                     
                     ?>
   
                 </div>
                 <div class="col-12 col-xl-4 text-center">
                             <?php
+                    if(isset($_SESSION['date1'])&&isset($_SESSION['date2'])){
                             $balance = $sumOfAllIncomes-$sumOfAllExpenses;
                             $balance = number_format( $balance, 2, '.', '' );
 
@@ -432,6 +439,7 @@ if (isset($_POST['date1']))
                             END;
 
                             }
+                        }
                             ?>
 
                         </div>

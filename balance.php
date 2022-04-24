@@ -79,7 +79,7 @@ if (!isset($_SESSION['loggedUser']))
             </div>
         </nav>
         <div class="container">
-            <form method="post">
+
                 <div  class="row ms-4">
                 <select class="custom-select" id="period" name = "selectPeriodTime" onchange="location = this.value;">>
                     <option value="balance.php" selected>Current Month</option>
@@ -404,7 +404,7 @@ if (!isset($_SESSION['loggedUser']))
                     </div>
                 </div>
             </div>
-                        </form>
+                       
         </div>
     </div>
 
